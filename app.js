@@ -9,6 +9,8 @@ irc.boot(function(err, serv) {
 
 var ati = new ATI('http://minecraft-server.eu/board/qry.php?upTo=');
 
+ati.running = true;
+
 ati.newMessage = function(username, message) {
 	console.log(message);
 

@@ -78,7 +78,10 @@ var request = require('request'),
 
     }
 
-    async.forever(
+    async.while(
+    function() {
+    	return main.running;
+    },
     function(callback) {
 
             request.get(url + lastTransferedMessage, function(err, response, body) {
