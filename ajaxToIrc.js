@@ -78,11 +78,8 @@ var request = require('request'),
 
     }
 
-    async.while(
-    function() {
-    	return main.running;
-    },
-    function(callback) {
+    async.forever(
+        function(callback) {
 
             request.get(url + lastTransferedMessage, function(err, response, body) {
                 if (!err && response.statusCode == 200) {
