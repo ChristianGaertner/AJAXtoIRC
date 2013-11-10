@@ -40,7 +40,7 @@ var request = require('request'),
                 username,
                 ["http://code.jquery.com/jquery.js"],
                 function(errors, window) {
-                    if (errors) return callback(errors);
+                    if (errors) return callback(errors, username);
 
                     return callback(null, window.$('span').text());
                 }
@@ -63,6 +63,7 @@ var request = require('request'),
             message,
             ["http://code.jquery.com/jquery.js"],
             function(errors, window) {
+            	if (errors) return callback(errors, message);
                 var cMessage = message.replace(smiley, window.$('img').attr('title'));
                 return callback(errors, cMessage);
             }
