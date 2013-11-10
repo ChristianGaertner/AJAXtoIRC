@@ -17,9 +17,9 @@ ati.newMessage = function(username, message) {
 		var keys = Object.keys(server.channels.registered);
 		var channel = server.channels.registered[keys[0]]
 		
-		channel.send(':' + username + '!~' + username + '@minecraft-server.eu PRIVMSG #mc-server :' + message);
-	
-
+		if (channel !== null) {
+			channel.send(':' + username + '!~' + username + '@minecraft-server.eu PRIVMSG #mc-server :' + message);	
+		}
 	}
 }
 
