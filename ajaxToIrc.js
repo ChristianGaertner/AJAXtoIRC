@@ -65,7 +65,7 @@ var request = require('request'),
             function(errors, window) {
             	if (errors) return callback(errors, message);
                 var cMessage = message.replace(smiley, window.$('img').attr('title'));
-                return callback(errors, cMessage);
+                return fixSmiley(cMessage, callback);
             }
         );
 
