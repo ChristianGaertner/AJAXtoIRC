@@ -14,7 +14,8 @@ var request = require('request'),
     var lastTransferedMessage = 1;
 
     var main = {
-        'newMessage': function() {}
+        newMessage: function() {},
+        debug: false
     };
 
 
@@ -85,7 +86,13 @@ var request = require('request'),
             request.get(url + lastTransferedMessage, function(err, response, body) {
                 if (!err && response.statusCode == 200) {
                     var data = JSON.parse(body.trim());
-                    if(data.lastTransferedMessage > 0) {
+                    
+                    if (main.debug) {
+                    	console.log(data);
+                    	console.log(lastTransferedMessage);
+                    }
+                    
+                    if(data.lastTransferedMessage !== 0) {
                         lastTransferedMessage = data.lastTransferedMessage;
                     }
 
