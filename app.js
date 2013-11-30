@@ -7,10 +7,15 @@ irc.boot(function(err, serv) {
 	server = serv;
 });
 
-var ati = new ATI('http://minecraft-server.eu/board/qry.php?upTo=');
+var ati = new ATI('http://minecraft-server.eu/board/qrsy.php?upTo=');
 
-ati.newMessage = function(username, message) {
-	// console.log(message);
+
+ati.on('error', function(message) {
+	console.log(message);
+});
+
+ati.on('message', function(username, message) {
+	console.log(message);
 
 	if (server != null) {
 
@@ -21,5 +26,4 @@ ati.newMessage = function(username, message) {
 			channel.send(':' + username + '!~' + username + '@minecraft-server.eu PRIVMSG #mc-server :' + message);	
 		}
 	}
-}
-
+});

@@ -22,8 +22,8 @@ var request = require('request'),
         on: function(type, callback) {
             main.eventlisteners.type = callback;
         },
-        triggerEvent: function(type, message) {
-            return main.eventlisteners.type(message);
+        triggerEvent: function(type, message, data) {
+            return main.eventlisteners.type(message, data);
         }
     };
 
@@ -84,7 +84,7 @@ var request = require('request'),
     var prepareMessages = function(messages) {
         
         for (var i = 0; i < messages.length; i++) {
-            main.newMessage(messages[i].username, messages[i].message);
+            main.triggerEvent('message', messages[i].username, messages[i].message);
         }
 
     }
@@ -120,7 +120,7 @@ var request = require('request'),
                     
 
                 } else {
-                    main.triggerEvent('error', 'Error pulling data!');
+                    main.triggerEvent('error', 'Error pulling data! ' + response.statusCode);
                 }
             });
 
