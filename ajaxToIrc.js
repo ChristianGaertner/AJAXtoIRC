@@ -9,13 +9,22 @@ var request = require('request'),
     async   = require('async');
 
 
-    String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g, '');};
+    String.prototype.trim = function() {
+        return this.replace(/^\s+|\s+$/g, '');
+    };
 
     var lastTransferedMessage = 1;
 
     var main = {
         newMessage: function() {},
-        debug: false
+        debug: false,
+        eventlisteners: {},
+        on: function(type, callback) {
+            main.eventlisteners.type = callback;
+        },
+        triggerEvent: function(type, message) {
+            return main.eventlisteners.type(message);
+        }
     };
 
 
@@ -110,6 +119,8 @@ var request = require('request'),
 
                     
 
+                } else {
+                    main.triggerEvent('error', 'Error pulling data!');
                 }
             });
 
