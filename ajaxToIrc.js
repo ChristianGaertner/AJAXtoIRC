@@ -1,3 +1,6 @@
+var EventEmitter = require("events").EventEmitter,
+    emitter = new EventEmitter();
+
 module.exports = AJAXtoIRC;
 
 
@@ -14,19 +17,6 @@ var request = require('request'),
     };
 
     var lastTransferedMessage = 1;
-
-    var main = {
-        newMessage: function() {},
-        debug: false,
-        eventlisteners: {},
-        on: function(type, callback) {
-            main.eventlisteners.type = callback;
-        },
-        triggerEvent: function(type, message, data) {
-            return main.eventlisteners.type(message, data);
-        }
-    };
-
 
     var fixHTML = function(message, i, callback) {
         var j = 0;
@@ -84,7 +74,10 @@ var request = require('request'),
     var prepareMessages = function(messages) {
         
         for (var i = 0; i < messages.length; i++) {
-            main.triggerEvent('message', messages[i].username, messages[i].message);
+            emitter.emit('message', {
+                username: messages[i].username,
+                message: messages[i].message
+            });
         }
 
     }
@@ -95,11 +88,6 @@ var request = require('request'),
             request.get(url + lastTransferedMessage, function(err, response, body) {
                 if (!err && response.statusCode == 200) {
                     var data = JSON.parse(body.trim());
-                    
-                    if (main.debug) {
-                    	console.log(data);
-                    	console.log(lastTransferedMessage);
-                    }
                     
                     if(data.lastTransferedMessage !== 0) {
                         lastTransferedMessage = data.lastTransferedMessage;
@@ -120,7 +108,7 @@ var request = require('request'),
                     
 
                 } else {
-                    main.triggerEvent('error', 'Error pulling data! ' + response.statusCode);
+                    emitter.emit('error', 'Error pulling data! ' + response.statusCode);
                 }
             });
 
@@ -129,6 +117,6 @@ var request = require('request'),
         }
     );
 
-    return main;
+    return emitter;
 
 }
