@@ -15,7 +15,7 @@ ati.on('error', function(message) {
 });
 
 ati.on('message', function(data) {
-	data.username = data.username.replace(/\s+/g, '-');
+	data.username = data.username.replace(/\s+/g, '');
 
 	if (server != null) {
 
