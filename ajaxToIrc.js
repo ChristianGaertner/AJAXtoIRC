@@ -84,15 +84,10 @@ var request = require('request'),
 
     async.forever(function(callback) {
 
-            request.get(url + lastTransferedMessage, function(err, response, body) {
-                // Fallback
-                var timerID = setTimeout(callback, 10000);
-                
+            request.get(url + lastTransferedMessage, function(err, response, body) {      
                 if (!err && response.statusCode == 200) {
                     
                     var data = JSON.parse(body.trim());
-                    
-                    console.log(data); // DEBUG stuff
                     
                     if(data.lastTransferedMessage !== 0) {
                         lastTransferedMessage = data.lastTransferedMessage;
@@ -106,12 +101,7 @@ var request = require('request'),
                             data.newMessages[id] = message;
                             j--;
                             if (j == 0) {
-                                
                                 prepareMessages(data.newMessages);
-
-                                clearInterval(timerID);
-                                
-                                callback();
                             }
                         });
                     }
@@ -121,6 +111,8 @@ var request = require('request'),
                 } else {
                     emitter.emit('error', 'Error pulling data! ' + response.statusCode);
                 }
+                console.log(lastTransferedMessage);
+                setTimeout(callback, 5000);
 
             });
 
