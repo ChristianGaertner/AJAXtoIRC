@@ -16,8 +16,6 @@ var request = require('request'),
         return this.replace(/^\s+|\s+$/g, '');
     };
 
-    var lastTransferedMessage = 1;
-
     var fixHTML = function(message, i, callback) {
         var j = 0;
         fixUsername(message.username, function(err, username) {
@@ -82,18 +80,24 @@ var request = require('request'),
 
     }
 
+    var lastTransferedMessage = 1;
+
     async.forever(
         function(callback) {
 
             request.get(url + lastTransferedMessage, function(err, response, body) {
                 if (!err && response.statusCode == 200) {
                     var data = JSON.parse(body.trim());
-                    
+                    console.log(data);
                     if(data.lastTransferedMessage !== 0) {
                         lastTransferedMessage = data.lastTransferedMessage;
                     }
 
                     var j = data.newMessages.length;
+                    
+                    if (j == 0) {
+                        setTimeout(callback, 5000);
+                    }
                     for (var i = 0; i < data.newMessages.length; i++) {
 
                         fixHTML(data.newMessages[i], i, function(err, id, message) {
@@ -101,6 +105,7 @@ var request = require('request'),
                             j--;
                             if (j == 0) {
                                 prepareMessages(data.newMessages);
+                                callback();
                             }
                         });
                     }
@@ -112,7 +117,8 @@ var request = require('request'),
                 }
             });
 
-            setTimeout(callback, 5000);
+            // Fallback
+            setTimeout(callback, 100000);
 
         }
     );
