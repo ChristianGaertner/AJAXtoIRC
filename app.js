@@ -1,5 +1,5 @@
 var ATI = require('./ajaxToIrc'),
-	irc = require('ircdjs').Server,
+	irc = require('./ircdjs').Server,
 	async = require('async');
 
 var server = null;

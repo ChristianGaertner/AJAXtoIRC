@@ -1,0 +1,18 @@
+{ "network":  "MCEU",
+  "hostname": "localhost",
+  "serverDescription": "MCEU AJAX Clone",
+  "serverName": "MCEU",
+  "port": 6667,
+  "linkPort": 7777,
+  "motd": "READ-ONLY-STREAM",
+  "whoWasLimit": 10000,
+  "token": 1,
+  "opers": {
+    "christian": { "password": "$2a$10$kok2aiGOI2dje3FFxLbFNOWpoyp2Y.azQ0H2UJx5wuGpC9a/3M1EC" }
+  },
+  "channels": {
+    "#mc-server": { "topic": "CHAT" }
+  },
+  "pingTimeout": 120,
+  "maxNickLength": 30
+}
