@@ -3,6 +3,7 @@ var EventEmitter = require("events").EventEmitter,
 
 module.exports = AJAXtoIRC;
 
+var idle = 0;
 
 function AJAXtoIRC (url) {
 
@@ -89,8 +90,15 @@ var request = require('request'),
                     
                     var data = JSON.parse(body.trim());
                     
+                    if (idle > 1000) {
+                    	lastTransferedMessage = 0;
+                    	idle = 0;
+                    }
+
                     if(data.lastTransferedMessage !== 0) {
                         lastTransferedMessage = data.lastTransferedMessage;
+                    } else {
+                    	idle++;
                     }
 
                     var j = data.newMessages.length;
@@ -111,7 +119,8 @@ var request = require('request'),
                 } else {
                     emitter.emit('error', 'Error pulling data! ' + response.statusCode);
                 }
-                console.log(lastTransferedMessage);
+                console.log('ltM: ' + lastTransferedMessage);
+                console.log('IDLE: ' + idle);
                 setTimeout(callback, 5000);
 
             });
