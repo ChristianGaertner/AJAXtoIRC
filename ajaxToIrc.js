@@ -97,6 +97,7 @@ var request = require('request'),
 
                     if(data.lastTransferedMessage !== 0) {
                         lastTransferedMessage = data.lastTransferedMessage;
+                        idle = 0;
                     } else {
                     	idle++;
                     }
